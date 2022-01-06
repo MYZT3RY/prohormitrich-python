@@ -9,6 +9,7 @@ from configs import tgConfig
 from commands import stats
 from db import dbconnect
 from messages import counter
+from commands import mystats
 
 def message_handler(update: Update, context: CallbackContext):
     counter.messageCounter(update)
@@ -24,6 +25,7 @@ def main():
     except Exception as ex:
         print(ex)
 
+    updater.dispatcher.add_handler(CommandHandler("mystats", mystats.cmdMyStats))
     updater.dispatcher.add_handler(CommandHandler("stats", stats.cmdStats))
     updater.dispatcher.add_handler(MessageHandler(filters=Filters.all, callback=message_handler))
 
