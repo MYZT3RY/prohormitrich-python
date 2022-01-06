@@ -35,6 +35,22 @@ CREATE TABLE IF NOT EXISTS `chats` (
 
 -- Экспортируемые данные не выделены.
 
+-- Дамп структуры для таблица prohormitrich.updates
+CREATE TABLE IF NOT EXISTS `updates` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `text` varchar(1024) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Дамп данных таблицы prohormitrich.updates: ~2 rows (приблизительно)
+/*!40000 ALTER TABLE `updates` DISABLE KEYS */;
+INSERT INTO `updates` (`id`, `text`) VALUES
+	(1, 'Обновление 0.1\r\n\r\n- Добавлена команда просмотра команд - /help.\r\n- Добавлена команда просмотра личной статистики - /mystats.\r\n- Добавлена команда просмотра статистики чата - /stats.\r\n- Добавлен счётчик сообщений, голосовых сообщений, видео, аудио, фото, документов, стикеров и видео сообщений.\r\n- Добавлено подключение к базе данных.\r\n- Добавлено подключение к боту.'),
+	(2, 'Обновление 0.1.1\r\n\r\n- Исправлена ошибка при выводе статистики с нулевым днём регистрации чата/участника.'),
+	(3, 'Обновление 0.2\r\n\r\n- Добавлена команда с просмотром рейтинга 10 пользователей по количеству сообщений - /top.\r\n- Добавлена команда с просмотром последних 5-ти обновлений бота - /updates.');
+/*!40000 ALTER TABLE `updates` ENABLE KEYS */;
+
 -- Дамп структуры для таблица prohormitrich.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
