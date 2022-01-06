@@ -23,6 +23,9 @@ def cmdStats(update: Update, context: CallbackContext):
     rows = cursor.fetchall()
     row = rows[0]
 
+    if row["days"] == 0:
+        row["days"] = 1
+
     messagesPerDay = row["messages"] / row["days"]
 
     cursor.close()
