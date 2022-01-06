@@ -12,6 +12,7 @@ from messages import counter
 from commands import mystats
 from commands import help
 from commands import updates
+from commands import top
 
 def message_handler(update: Update, context: CallbackContext):
     counter.messageCounter(update)
@@ -27,6 +28,7 @@ def main():
     except Exception as ex:
         print(ex)
 
+    updater.dispatcher.add_handler(CommandHandler("top", top.cmdTop))
     updater.dispatcher.add_handler(CommandHandler("updates", updates.cmdUpdates))
     updater.dispatcher.add_handler(CommandHandler("help", help.cmdHelp))
     updater.dispatcher.add_handler(CommandHandler("mystats", mystats.cmdMyStats))

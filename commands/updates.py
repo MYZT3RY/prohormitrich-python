@@ -4,9 +4,9 @@ from messages import counter
 from db import dbconnect
 
 def cmdUpdates(update: Update, context: CallbackContext):
-    tgChatId = update.message.chat_id
-
     counter.messageCounter(update)
+
+    tgChatId = update.message.chat_id
 
     db = dbconnect.dbConnect()
     cursor = db.cursor()
@@ -15,10 +15,8 @@ def cmdUpdates(update: Update, context: CallbackContext):
     rows = cursor.fetchall()
     
     string = ""
-    print(rows)
 
     for row in rows:
-        print(row)
         tmp = "{0}\n\n".format(row["text"])
         string = string + tmp
 
