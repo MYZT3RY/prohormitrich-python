@@ -1,1 +1,1 @@
-tgToken = '' # bot
+tgToken = '5077060836:AAELEMcd3N9JUFhsLa0cWWaa-OmhZBHaFkI' # bot
