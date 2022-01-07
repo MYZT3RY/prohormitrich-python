@@ -4,6 +4,7 @@ from messages import counter
 from db import dbconnect
 from configs import dbConfig
 from configs import tgConfig
+from telegram.constants import PARSEMODE_HTML
 
 def cmdStats(update: Update, context: CallbackContext):
     counter.messageCounter(update)
@@ -33,4 +34,4 @@ def cmdStats(update: Update, context: CallbackContext):
 
     totalUsers = bot.Bot(tgConfig.tgToken).getChatMemberCount(chat_id=tgChatId)
 
-    context.bot.send_message(chat_id=tgChatId, text="Статистика чата\n\nДата регистрации чата: {0}\nКоличество участников чата: {1} ({2} зарегистрированных)\n\nСообщений: {3}\nГолосовых сообщений: {4}\nВидео сообщений: {5}\nВидеозаписи: {6}\nАудиозаписи: {7}\nФотографий: {8}\nДокументов: {9}\nСтикеров: {10}\n\nСреднее количество сообщений в день: {11}".format(row["dateofregister"],totalUsers,registeredUsers,row["messages"],row["voices"],row["videovoices"],row["videos"],row["audios"],row["photos"],row["documents"],row["stickers"],messagesPerDay))
+    context.bot.send_message(chat_id=tgChatId, text="<b>Статистика чата</b>\n\nДата регистрации чата: <b>{0}</b>\nКоличество участников чата: <b>{1}</b> (<b>{2}</b> зарегистрированных)\n\nСообщений: <b>{3}</b>\nГолосовых сообщений: <b>{4}</b>\nВидео сообщений: <b>{5}</b>\nВидеозаписи: <b>{6}</b>\nАудиозаписи: <b>{7}</b>\nФотографий: <b>{8}</b>\nДокументов: <b>{9}</b>\nСтикеров: <b>{10}</b>\n\nСреднее количество сообщений в день: <b>{11}</b>".format(row["dateofregister"],totalUsers,registeredUsers,row["messages"],row["voices"],row["videovoices"],row["videos"],row["audios"],row["photos"],row["documents"],row["stickers"],messagesPerDay), parse_mode=PARSEMODE_HTML)

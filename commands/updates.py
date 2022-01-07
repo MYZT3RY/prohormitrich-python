@@ -2,6 +2,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 from messages import counter
 from db import dbconnect
+from telegram.constants import PARSEMODE_HTML
 
 def cmdUpdates(update: Update, context: CallbackContext):
     counter.messageCounter(update)
@@ -20,4 +21,4 @@ def cmdUpdates(update: Update, context: CallbackContext):
         tmp = "{0}\n\n".format(row["text"])
         string = string + tmp
 
-    context.bot.send_message(chat_id=tgChatId, text=string)
+    context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML)
