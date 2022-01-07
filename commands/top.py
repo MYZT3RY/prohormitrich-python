@@ -28,7 +28,7 @@ def cmdTop(update: Update, context: CallbackContext):
 
         messagesPerDay = row["messages"] / row["days"]
 
-        tmp = "{0}. <b>@{1}</b> ({2} сообщений, {3} сообщений в день)\n".format(count,row["username"],row["messages"],messagesPerDay)
+        tmp = "{0}. <b>@{1}</b> ({2} сообщений, {3:.2f} сообщений в день)\n".format(count,row["username"],row["messages"],messagesPerDay)
         string = string + tmp
 
     context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML)
