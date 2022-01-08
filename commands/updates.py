@@ -21,4 +21,4 @@ def cmdUpdates(update: Update, context: CallbackContext):
         tmp = "{0}\n\n".format(row["text"])
         string = string + tmp
 
-    context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML)
+    context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML, disable_notification=True)
