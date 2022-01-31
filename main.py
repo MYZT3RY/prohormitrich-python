@@ -1,3 +1,4 @@
+from ast import Call
 from telegram import Update, bot, chat, update, user
 import telegram
 from telegram.ext import Updater
@@ -13,6 +14,9 @@ from commands import mystats
 from commands import help
 from commands import updates
 from commands import top
+from commands import nick
+from configs import config
+from configs import dbConfig
 
 def message_handler(update: Update, context: CallbackContext):
     counter.messageCounter(update)
@@ -28,6 +32,11 @@ def main():
     except Exception as ex:
         print(ex)
 
+    updater.dispatcher.add_handler(CommandHandler("nick_visible", nick.cmdNick))
+    updater.dispatcher.add_handler(CommandHandler("nick_delete", nick.cmdNick))
+    updater.dispatcher.add_handler(CommandHandler("nick_show", nick.cmdNick))
+    updater.dispatcher.add_handler(CommandHandler("nick_new", nick.cmdNick))
+    updater.dispatcher.add_handler(CommandHandler("nick", nick.cmdNick))
     updater.dispatcher.add_handler(CommandHandler("top", top.cmdTop))
     updater.dispatcher.add_handler(CommandHandler("updates", updates.cmdUpdates))
     updater.dispatcher.add_handler(CommandHandler("help", help.cmdHelp))
@@ -36,6 +45,14 @@ def main():
     updater.dispatcher.add_handler(MessageHandler(filters=Filters.all, callback=message_handler))
 
     db = dbconnect.dbConnect()
+    cursor = db.cursor()
+
+    cursor.execute("select count(`id`)as `totalvalue`from`{0}`".format(dbConfig.tblNicknames))
+    rows = cursor.fetchall()
+    row = rows[0]
+
+    config.valueOfNicknames = row["totalvalue"]
+
     db.close()
 
     updater.start_polling()
