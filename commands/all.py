@@ -42,6 +42,6 @@ def cmdAll(update: Update, context: CallbackContext):
                 if stored_row["name"] is not None and stored_row["visible"]:
                     username = stored_row["name"]
 
-                string = string + "<b><a href='tg://user?id={0}'>{1}</a></b>\n".format(tgUserId,username)
+                string = string + "<b><a href='tg://user?id={0}'>{1}</a></b>\n".format(row["userid"],username)
 
     context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML)
