@@ -37,7 +37,7 @@ def cmdTop(update: Update, context: CallbackContext):
         if stored_row["name"] is not None and stored_row["visible"]:
             username = stored_row["name"]
 
-        tmp = "{0}. <b><a href='tg://user?id={1}'>{2}</a></b> ({3} сообщений, {4:.2f} сообщений в день)\n".format(count,row["userid"],username,row["messages"],messagesPerDay)
+        tmp = "{0}. <b><u><a href='tg://'>{2}</a></u></b> ({3} сообщений, {4:.2f} сообщений в день)\n".format(count,row["userid"],username,row["messages"],messagesPerDay)
         string = string + tmp
 
     context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML, disable_notification=True)

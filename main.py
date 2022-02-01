@@ -15,6 +15,7 @@ from commands import help
 from commands import updates
 from commands import top
 from commands import nick
+from commands import all
 from configs import config
 from configs import dbConfig
 
@@ -32,6 +33,7 @@ def main():
     except Exception as ex:
         print(ex)
 
+    updater.dispatcher.add_handler(CommandHandler("all", all.cmdAll))
     updater.dispatcher.add_handler(CommandHandler("nick_visible", nick.cmdNick))
     updater.dispatcher.add_handler(CommandHandler("nick_delete", nick.cmdNick))
     updater.dispatcher.add_handler(CommandHandler("nick_show", nick.cmdNick))
