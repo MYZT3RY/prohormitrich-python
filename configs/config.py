@@ -1,0 +1,1 @@
+valueOfNicknames = 0
