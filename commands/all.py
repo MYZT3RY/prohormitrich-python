@@ -16,31 +16,38 @@ def cmdAll(update: Update, context: CallbackContext):
     db = dbconnect.dbConnect()
     cursor = db.cursor()
 
-    cursor.execute("call getNickname({0},{1})".format(tgUserId,tgChatId))
-    stored_rows = cursor.fetchall()
-    stored_row = stored_rows[0]
+    cursor.execute("\
+        select \
+            u.userid \
+            , u.username \
+            , u.nicknamevisible \
+            , n.name \
+        from \
+            {0} u \
+                left join nicknames n on n.id = u.nicknameid \
+        where \
+            u.chatid = '{1}' \
+    ".format(dbConfig.tblUsers,tgChatId))
 
-    if stored_row["name"] is not None and stored_row["visible"]:
-        username = stored_row["name"]
-
-    string = "<b><a href='tg://user?id={0}'>{1}</a></b> вызывает всех участников чата:\n\n".format(tgUserId,username)
-
-    cursor.execute("select`userid`,`username`from`{0}`where`chatid`='{1}'".format(dbConfig.tblUsers,tgChatId))
     rows = cursor.fetchall()
+    db.close()
 
     if len(rows) == 1:
         string = "Недостаточно участников в чате, чтобы использовать эту команду!"
     else:
+        for i in range(len(rows)):
+            if rows[i]["userid"] is not None and rows[i]["nicknamevisible"]:
+                username= rows[i]["userid"]
+                break
+
+        string = "<b><a href='tg://user?id={0}'>{1}</a></b> вызывает всех участников чата:\n\n".format(tgUserId,username)
+
         for row in rows:
             if row["userid"] != str(tgUserId):
-                cursor.execute("call getNickname({0},{1})".format(row["userid"],tgChatId))
-                stored_rows = cursor.fetchall()
-                stored_row = stored_rows[0]
-
                 username = row["username"]
 
-                if stored_row["name"] is not None and stored_row["visible"]:
-                    username = stored_row["name"]
+                if row["name"] is not None and row["nicknamevisible"]:
+                    username = row["name"]
 
                 string = string + "<b><a href='tg://user?id={0}'>{1}</a></b>\n".format(row["userid"],username)
 

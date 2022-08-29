@@ -41,7 +41,18 @@ def cmdNick(update: Update, context: CallbackContext):
 
         string = "Ваш новый внутренний никнейм - <b>{0}</b>".format(row["name"])
     elif len(arg) == 2 and arg[1] == "show":
-        cursor.execute("call getNickname({0},{1})".format(tgUserId,tgChatId))
+        cursor.execute("\
+            select \
+	            n.name \
+	            , u.nicknamevisible as visible \
+            from \
+	            {0} u \
+		            left join {1} n on n.id = u.nicknameid \
+            where \
+	            u.userid = '{2}' \
+	            and u.chatid = '{3}' \
+        ".format(dbConfig.tblUsers, dbConfig.tblNicknames, tgUserId, tgChatId))
+
         rows = cursor.fetchall()
         row = rows[0]
 

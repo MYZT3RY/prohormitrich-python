@@ -1,6 +1,4 @@
-from ast import Call
-from telegram import Update, bot, chat, update, user
-import telegram
+from telegram import Update
 from telegram.ext import Updater
 from telegram.ext import CallbackContext
 from telegram.ext import Filters
