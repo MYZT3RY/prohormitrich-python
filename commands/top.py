@@ -13,7 +13,24 @@ def cmdTop(update: Update, context: CallbackContext):
     db = dbconnect.dbConnect()
     cursor = db.cursor()
 
-    cursor.execute("select`username`,`messages`,DATEDIFF(NOW(),`dateofregister`)as`days`,`userid`from`{0}`where`chatid`='{1}'order by`messages`desc limit 10".format(dbConfig.tblUsers,tgChatId))
+    cursor.execute("\
+        select \
+            u.username \
+            , u.messages \
+            , datediff(now(), u.dateofregister) as days \
+            , u.userid \
+            , u.nicknamevisible as visible \
+            , n.name \
+        from \
+            {0} u \
+                left join {1} n on n.id = u.nicknameid \
+        where \
+            u.chatid = '{2}' \
+        order by \
+            u.messages desc \
+        limit 10 \
+    ".format(dbConfig.tblUsers, dbConfig.tblNicknames, tgChatId))
+
     rows = cursor.fetchall()
     
     string = "<b>Рейтинг участников чата</b>\n\n"
@@ -28,16 +45,12 @@ def cmdTop(update: Update, context: CallbackContext):
 
         messagesPerDay = row["messages"] / row["days"]
 
-        cursor.execute("call getNickname({0},{1})".format(row["userid"],tgChatId))
-        stored_rows = cursor.fetchall()
-        stored_row = stored_rows[0]
-
         username = row["username"]
 
-        if stored_row["name"] is not None and stored_row["visible"]:
-            username = stored_row["name"]
+        if row["name"] is not None and row["visible"]:
+            username = row["name"]
 
-        tmp = "{0}. <b><u><a href='tg://'>{2}</a></u></b> ({3} сообщений, {4:.2f} сообщений в день)\n".format(count,row["userid"],username,row["messages"],messagesPerDay)
+        tmp = "{0}. <b><u><a href='tg://'>{2}</a></u></b> (<b>{3}</b> сообщений, <b>{4:.2f}</b> сообщений в день)\n".format(count,row["userid"],username,row["messages"],messagesPerDay)
         string = string + tmp
 
     context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML, disable_notification=True)
