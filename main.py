@@ -16,8 +16,10 @@ from commands import updates
 from commands import top
 from commands import nick
 from commands import all
+from commands import anek
 from configs import config
 from configs import dbConfig
+import os
 
 def message_handler(update: Update, context: CallbackContext):
     counter.messageCounter(update)
@@ -44,6 +46,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("help", help.cmdHelp))
     updater.dispatcher.add_handler(CommandHandler("mystats", mystats.cmdMyStats))
     updater.dispatcher.add_handler(CommandHandler("stats", stats.cmdStats))
+    updater.dispatcher.add_handler(CommandHandler("anek", anek.cmdAnek))
     updater.dispatcher.add_handler(MessageHandler(filters=Filters.all, callback=message_handler))
 
     db = dbconnect.dbConnect()
@@ -56,6 +59,11 @@ def main():
     config.valueOfNicknames = row["totalvalue"]
 
     db.close()
+
+    config.valueOfAnekBg = len([f for f in os.listdir('./' + config.pathToAnekBg)])
+
+    print("value of nicknames - {0}".format(config.valueOfNicknames))
+    print("value of anek backgrounds - {0}".format(config.valueOfAnekBg))
 
     updater.start_polling()
     updater.idle()
