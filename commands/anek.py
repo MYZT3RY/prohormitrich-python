@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from configs import config
 
 def cmdAnek(update: Update, context: CallbackContext):
-    counter.messageCounter(update)
+    counter.messageCounter(update.message)
 
     tgChatId = update.message.chat_id
 

@@ -20,7 +20,10 @@ from configs import dbConfig
 import os
 
 def message_handler(update: Update, context: CallbackContext):
-    counter.messageCounter(update)
+    if update.message is not None:
+        counter.messageCounter(update.message)
+    elif update.edited_message is not None:
+        counter.messageEditCounter(update.edited_message)
 
 def main():
     updater = None

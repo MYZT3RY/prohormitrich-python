@@ -9,7 +9,7 @@ from telegram.constants import PARSEMODE_HTML
 import re
 
 def cmdNick(update: Update, context: CallbackContext):
-    counter.messageCounter(update)
+    counter.messageCounter(update.message)
 
     command = update.message.text
     arg = ""
