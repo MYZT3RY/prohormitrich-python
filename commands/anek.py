@@ -20,7 +20,14 @@ def cmdAnek(update: Update, context: CallbackContext):
 
     randPhoto = random.randint(1, config.valueOfAnekBg)
     photoPath = open("{0}{1}{2:02}.jpg".format(config.pathToAnekBg, config.prefixAnekBg, randPhoto), 'rb')
+
+    key = 'settings' + str(tgChatId)
+
+    anekBg = context.chat_data[key]["anekbg"]
     
     string = "\n<i><b>{0}</b></i>\n\n{1}\n".format(numberOfAnek, result)
 
-    context.bot.send_photo(chat_id=tgChatId, photo=photoPath, caption=string, parse_mode=PARSEMODE_HTML, disable_notification=True)
+    if anekBg is True:
+        context.bot.send_photo(chat_id=tgChatId, photo=photoPath, caption=string, parse_mode=PARSEMODE_HTML, disable_notification=True)
+    else:
+        context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML, disable_notification=True)
