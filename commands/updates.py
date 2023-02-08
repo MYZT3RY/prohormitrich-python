@@ -5,7 +5,7 @@ from db import dbconnect
 from telegram.constants import PARSEMODE_HTML
 
 def cmdUpdates(update: Update, context: CallbackContext):
-    counter.messageCounter(update)
+    counter.messageCounter(update.message)
 
     tgChatId = update.message.chat_id
 
