@@ -32,23 +32,25 @@ def cmdAll(update: Update, context: CallbackContext):
     rows = cursor.fetchall()
     db.close()
 
-    if len(rows) == 1:
-        string = "Недостаточно участников в чате, чтобы использовать эту команду!"
-    else:
-        for i in range(len(rows)):
-            if rows[i]["userid"] is not None and rows[i]["nicknamevisible"]:
-                username= rows[i]["userid"]
-                break
+    # if len(rows) > 0:
+    #     string = "Недостаточно участников в чате, чтобы использовать эту команду!"
+    # else:
+    for i in range(len(rows)):
+        username = rows[i]["username"]
 
-        string = "<b><a href='tg://user?id={0}'>{1}</a></b> вызывает всех участников чата:\n\n".format(tgUserId,username)
+        if rows[i]["userid"] is not None and rows[i]["nicknamevisible"]:
+            username = rows[i]["name"]
+            break
 
-        for row in rows:
-            if row["userid"] != str(tgUserId):
-                username = row["username"]
+    string = "<b><a href='tg://user?id={0}'>{1}</a></b> вызывает всех участников чата:\n\n".format(tgUserId, username)
 
-                if row["name"] is not None and row["nicknamevisible"]:
-                    username = row["name"]
+    for row in rows:
+        if row["userid"] != str(tgUserId):
+            username = row["username"]
 
-                string = string + "<b><a href='tg://user?id={0}'>{1}</a></b>\n".format(row["userid"],username)
+            if row["name"] is not None and row["nicknamevisible"]:
+                username = row["name"]
+
+            string = string + "<b><a href='tg://user?id={0}'>{1}</a></b>\n".format(row["userid"], username)
 
     context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML)
