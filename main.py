@@ -15,12 +15,16 @@ from commands import top
 from commands import nick
 from commands import all
 from commands import anek
+from commands import settings
 from configs import config
 from configs import dbConfig
 import os
 
 def message_handler(update: Update, context: CallbackContext):
-    counter.messageCounter(update)
+    if update.message is not None:
+        counter.messageCounter(update.message)
+    elif update.edited_message is not None:
+        counter.messageEditCounter(update.edited_message)
 
 def main():
     updater = None
@@ -45,6 +49,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("mystats", mystats.cmdMyStats))
     updater.dispatcher.add_handler(CommandHandler("stats", stats.cmdStats))
     updater.dispatcher.add_handler(CommandHandler("anek", anek.cmdAnek))
+    updater.dispatcher.add_handler(CommandHandler("settings", settings.cmdSettings))
     updater.dispatcher.add_handler(MessageHandler(filters=Filters.all, callback=message_handler))
 
     db = dbconnect.dbConnect()

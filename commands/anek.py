@@ -6,9 +6,11 @@ from telegram.constants import PARSEMODE_HTML
 import requests
 from bs4 import BeautifulSoup
 from configs import config
+from configs import dbConfig
+from db import dbconnect
 
 def cmdAnek(update: Update, context: CallbackContext):
-    counter.messageCounter(update)
+    counter.messageCounter(update.message)
 
     tgChatId = update.message.chat_id
 
@@ -23,4 +25,14 @@ def cmdAnek(update: Update, context: CallbackContext):
     
     string = "\n<i><b>{0}</b></i>\n\n{1}\n".format(numberOfAnek, result)
 
-    context.bot.send_photo(chat_id=tgChatId, photo=photoPath, caption=string, parse_mode=PARSEMODE_HTML, disable_notification=True)
+    db = dbconnect.dbConnect()
+    cursor = db.cursor()
+
+    cursor.execute("select `show_anek_bg` from `{0}` where `chatid` = '{1}'".format(dbConfig.tblChatSettings, tgChatId))
+    rows = cursor.fetchall()
+    row = rows[0]
+
+    if row["show_anek_bg"] == 1:
+        context.bot.send_photo(chat_id=tgChatId, photo=photoPath, caption=string, parse_mode=PARSEMODE_HTML, disable_notification=True)
+    else:
+        context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML, disable_notification=True)

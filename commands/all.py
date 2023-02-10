@@ -6,7 +6,7 @@ from telegram.constants import PARSEMODE_HTML
 from configs import dbConfig
 
 def cmdAll(update: Update, context: CallbackContext):
-    counter.messageCounter(update)
+    counter.messageCounter(update.message)
 
     tgChatId = update.message.chat_id
     tgUserId = update.message.from_user.id
@@ -32,15 +32,17 @@ def cmdAll(update: Update, context: CallbackContext):
     rows = cursor.fetchall()
     db.close()
 
-    if len(rows) == 1:
+    if len(rows) > 0:
         string = "Недостаточно участников в чате, чтобы использовать эту команду!"
     else:
         for i in range(len(rows)):
+            username = rows[i]["username"]
+
             if rows[i]["userid"] is not None and rows[i]["nicknamevisible"]:
-                username= rows[i]["userid"]
+                username = rows[i]["name"]
                 break
 
-        string = "<b><a href='tg://user?id={0}'>{1}</a></b> вызывает всех участников чата:\n\n".format(tgUserId,username)
+        string = "<b><a href='tg://user?id={0}'>{1}</a></b> вызывает всех участников чата:\n\n".format(tgUserId, username)
 
         for row in rows:
             if row["userid"] != str(tgUserId):
@@ -49,6 +51,6 @@ def cmdAll(update: Update, context: CallbackContext):
                 if row["name"] is not None and row["nicknamevisible"]:
                     username = row["name"]
 
-                string = string + "<b><a href='tg://user?id={0}'>{1}</a></b>\n".format(row["userid"],username)
+                string = string + "<b><a href='tg://user?id={0}'>{1}</a></b>\n".format(row["userid"], username)
 
     context.bot.send_message(chat_id=tgChatId, text=string, parse_mode=PARSEMODE_HTML)

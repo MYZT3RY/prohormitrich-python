@@ -8,3 +8,4 @@ tblChats = 'chats' # table with chats
 tblUpdates = 'updates' # table with updates
 tblHelp = 'help' # table with help
 tblNicknames = 'nicknames' # table with nicknames
+tblChatSettings = 'chat_settings' # table with chat settings
