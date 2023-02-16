@@ -16,71 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `chat_settings`
---
-
-DROP TABLE IF EXISTS `chat_settings`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `chat_settings` (
-  `chatid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `show_anek_bg` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`chatid`),
-  KEY `chat_settings_chatid_IDX` (`chatid`) USING BTREE,
-  CONSTRAINT `chat_settings_FK` FOREIGN KEY (`chatid`) REFERENCES `chats` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Таблица с внутренними настройками чатов';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `chats`
---
-
-DROP TABLE IF EXISTS `chats`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `chats` (
-  `id` varchar(64) NOT NULL DEFAULT '',
-  `messages` int NOT NULL DEFAULT '0',
-  `dateofregister` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `voices` int NOT NULL DEFAULT '0',
-  `videos` int NOT NULL DEFAULT '0',
-  `audios` int NOT NULL DEFAULT '0',
-  `photos` int NOT NULL DEFAULT '0',
-  `documents` int NOT NULL DEFAULT '0',
-  `stickers` int NOT NULL DEFAULT '0',
-  `videovoices` int NOT NULL DEFAULT '0',
-  `edited_messages` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Таблица с информацией о чатах';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chats`
---
-
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `chats_create` AFTER INSERT ON `chats` FOR EACH ROW begin 
-	insert into 
-		chat_settings
-	set
-		chat_settings.chatid = new.id;
-end */;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
 -- Table structure for table `help`
 --
 
@@ -144,7 +79,7 @@ CREATE TABLE `updates` (
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 COMMENT='Таблица с текстом обновлений';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COMMENT='Таблица с текстом обновлений';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +88,7 @@ CREATE TABLE `updates` (
 
 LOCK TABLES `updates` WRITE;
 /*!40000 ALTER TABLE `updates` DISABLE KEYS */;
-INSERT INTO `updates` VALUES (1,'<b>Обновление 0.1</b>\r\n\r\n- Добавлена команда просмотра команд - <i>/help</i>.\r\n- Добавлена команда просмотра личной статистики - <i>/mystats</i>.\r\n- Добавлена команда просмотра статистики чата - <i>/stats</i>.\r\n- Добавлен счётчик сообщений, голосовых сообщений, видео, аудио, фото, документов, стикеров и видео сообщений.\r\n- Добавлено подключение к базе данных.\r\n- Добавлено подключение к боту.','2022-01-05 21:00:00'),(2,'<b>Обновление 0.1.1</b>\r\n\r\n- Исправлена ошибка при выводе статистики с нулевым днём регистрации чата/участника.','2022-01-05 21:00:00'),(3,'<b>Обновление 0.2</b>\r\n\r\n- Добавлена команда с просмотром рейтинга 10 пользователей по количеству сообщений - <i>/top</i>.\r\n- Добавлена команда с просмотром последних 5-ти обновлений бота - <i>/updates</i>.','2022-01-06 21:00:00'),(4,'<b>Обновление 0.3</b>\r\n\r\n- Добавлена поддержка разметки текста.\r\n- Добавлена загрузка текста для команды <i>/help</i> из базы данных.','2022-01-06 21:00:00'),(5,'<b>Обновление 0.3.1</b>\r\n\r\n- Исправлено корректное отображение среднего количества сообщений.','2022-01-06 21:00:00'),(6,'<b>Обновление 0.3.2</b>\r\n\r\n- Бот отправляет бесшумные сообщения, не вызывая звук при упоминании участников чата.','2022-01-07 21:00:00'),(7,'<b>Обновление 0.4</b>\r\n\r\n- Добавлена команда для управления внутренним никнеймом в чате - <i>/nick</i>.\r\n- Добавлена команда для упоминания всех участников чата - <i>/all</i>','2022-01-31 21:00:00'),(8,'<b>Обновление 0.4.1</b>\r\n\r\n- Исправлено некорректное упоминание участников чата.','2022-01-31 21:00:00'),(9,'<b>Обновление 0.5</b>\r\n\r\n- Добавлена команда для вывода случайного анекдота - <i>/anek</i>.\r\n- Рефакторинг SQL запросов.','2022-08-29 21:00:00'),(10,'<b>Обновление 0.6</b>\r\n\r\n- Добавлена обработка и счётчик редактируемых сообщений.\r\n- Добавлена команда для управления внутренними настройками чата - <i>/settings</i>.\r\n- Добавлено управление отображением картинки в анекдотах (<i>/settings anekbg</i>).\r\n- Добавлено отображение даты обновления в команде <i>/updates</i>.\r\n- Исправлено неправильное отображение имён в команде <i>/all</i>.\r\n- Рефакторинг SQL запросов.','2023-02-09 10:44:56'),(11,'<b>Обновление 0.6.1</b>\r\n\r\n- Исправлена кодировка при использовании команды <i>/anek</i>.','2023-02-10 12:37:34');
+INSERT INTO `updates` VALUES (1,'<b>Обновление 0.1</b>\r\n\r\n- Добавлена команда просмотра команд - <i>/help</i>.\r\n- Добавлена команда просмотра личной статистики - <i>/mystats</i>.\r\n- Добавлена команда просмотра статистики чата - <i>/stats</i>.\r\n- Добавлен счётчик сообщений, голосовых сообщений, видео, аудио, фото, документов, стикеров и видео сообщений.\r\n- Добавлено подключение к базе данных.\r\n- Добавлено подключение к боту.','2022-01-05 21:00:00'),(2,'<b>Обновление 0.1.1</b>\r\n\r\n- Исправлена ошибка при выводе статистики с нулевым днём регистрации чата/участника.','2022-01-05 21:00:00'),(3,'<b>Обновление 0.2</b>\r\n\r\n- Добавлена команда с просмотром рейтинга 10 пользователей по количеству сообщений - <i>/top</i>.\r\n- Добавлена команда с просмотром последних 5-ти обновлений бота - <i>/updates</i>.','2022-01-06 21:00:00'),(4,'<b>Обновление 0.3</b>\r\n\r\n- Добавлена поддержка разметки текста.\r\n- Добавлена загрузка текста для команды <i>/help</i> из базы данных.','2022-01-06 21:00:00'),(5,'<b>Обновление 0.3.1</b>\r\n\r\n- Исправлено корректное отображение среднего количества сообщений.','2022-01-06 21:00:00'),(6,'<b>Обновление 0.3.2</b>\r\n\r\n- Бот отправляет бесшумные сообщения, не вызывая звук при упоминании участников чата.','2022-01-07 21:00:00'),(7,'<b>Обновление 0.4</b>\r\n\r\n- Добавлена команда для управления внутренним никнеймом в чате - <i>/nick</i>.\r\n- Добавлена команда для упоминания всех участников чата - <i>/all</i>','2022-01-31 21:00:00'),(8,'<b>Обновление 0.4.1</b>\r\n\r\n- Исправлено некорректное упоминание участников чата.','2022-01-31 21:00:00'),(9,'<b>Обновление 0.5</b>\r\n\r\n- Добавлена команда для вывода случайного анекдота - <i>/anek</i>.\r\n- Рефакторинг SQL запросов.','2022-08-29 21:00:00'),(10,'<b>Обновление 0.6</b>\r\n\r\n- Добавлена обработка и счётчик редактируемых сообщений.\r\n- Добавлена команда для управления внутренними настройками чата - <i>/settings</i>.\r\n- Добавлено управление отображением картинки в анекдотах (<i>/settings anekbg</i>).\r\n- Добавлено отображение даты обновления в команде <i>/updates</i>.\r\n- Исправлено неправильное отображение имён в команде <i>/all</i>.\r\n- Рефакторинг SQL запросов.','2023-02-09 10:44:56'),(11,'<b>Обновление 0.6.1</b>\r\n\r\n- Исправлена кодировка при использовании команды <i>/anek</i>.','2023-02-10 12:37:34'),(12,'<b>Обновление 0.6.2</b>\r\n\r\n- Исправлена команда <i>/all</i>.','2023-02-16 16:09:18');
 /*!40000 ALTER TABLE `updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,8 +126,74 @@ CREATE TABLE `users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping routines for database 'prohormitrich'
+-- Table structure for table `chats`
 --
+
+DROP TABLE IF EXISTS `chats`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `chats` (
+  `id` varchar(64) NOT NULL DEFAULT '',
+  `messages` int NOT NULL DEFAULT '0',
+  `dateofregister` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `voices` int NOT NULL DEFAULT '0',
+  `videos` int NOT NULL DEFAULT '0',
+  `audios` int NOT NULL DEFAULT '0',
+  `photos` int NOT NULL DEFAULT '0',
+  `documents` int NOT NULL DEFAULT '0',
+  `stickers` int NOT NULL DEFAULT '0',
+  `videovoices` int NOT NULL DEFAULT '0',
+  `edited_messages` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Таблица с информацией о чатах';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chats`
+--
+
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `chats_create` AFTER INSERT ON `chats` FOR EACH ROW begin 
+	insert into 
+		chat_settings
+	set
+		chat_settings.chatid = new.id;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `chat_settings`
+--
+
+DROP TABLE IF EXISTS `chat_settings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `chat_settings` (
+  `chatid` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `show_anek_bg` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`chatid`),
+  KEY `chat_settings_chatid_IDX` (`chatid`) USING BTREE,
+  CONSTRAINT `chat_settings_FK` FOREIGN KEY (`chatid`) REFERENCES `chats` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='Таблица с внутренними настройками чатов';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chat_settings`
+--
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -203,4 +204,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-10 15:46:19
+-- Dump completed on 2023-02-16 19:10:26

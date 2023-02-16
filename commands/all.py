@@ -32,7 +32,7 @@ def cmdAll(update: Update, context: CallbackContext):
     rows = cursor.fetchall()
     db.close()
 
-    if len(rows) > 0:
+    if len(rows) <= 1:
         string = "Недостаточно участников в чате, чтобы использовать эту команду!"
     else:
         for i in range(len(rows)):
