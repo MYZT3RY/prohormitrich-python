@@ -16,6 +16,7 @@ from commands import nick
 from commands import all
 from commands import anek
 from commands import settings
+from commands import vodka
 from configs import config
 from configs import dbConfig
 import os
@@ -50,6 +51,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("stats", stats.cmdStats))
     updater.dispatcher.add_handler(CommandHandler("anek", anek.cmdAnek))
     updater.dispatcher.add_handler(CommandHandler("settings", settings.cmdSettings))
+    updater.dispatcher.add_handler(CommandHandler("vodka", vodka.cmdVodka))
     updater.dispatcher.add_handler(MessageHandler(filters=Filters.all, callback=message_handler))
 
     db = dbconnect.dbConnect()
