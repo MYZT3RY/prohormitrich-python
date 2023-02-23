@@ -52,6 +52,8 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("anek", anek.cmdAnek))
     updater.dispatcher.add_handler(CommandHandler("settings", settings.cmdSettings))
     updater.dispatcher.add_handler(CommandHandler("vodka", vodka.cmdVodka))
+    updater.dispatcher.add_handler(CommandHandler("top_messages", top.cmdTop))
+    updater.dispatcher.add_handler(CommandHandler("top_vodka", top.cmdTop))
     updater.dispatcher.add_handler(MessageHandler(filters=Filters.all, callback=message_handler))
 
     db = dbconnect.dbConnect()
