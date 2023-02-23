@@ -100,8 +100,43 @@ def cmdTop(update: Update, context: CallbackContext):
 
             tmp = "{0}. <b><u>{1}</u></b> (<b>{2:.1f} л.</b>)\n".format(count, username, row["vodka_drinked"])
             string = string + tmp
+    elif len(arg) == 2 and arg[1] == "eat":
+        cursor.execute("\
+            select \
+                u.username \
+                , u.userid \
+                , u.nicknamevisible as visible \
+                , n.name \
+                , u.food_eated \
+            from \
+                {0} u \
+                    left join {1} n on n.id = u.nicknameid \
+            where \
+                u.chatid = '{2}' \
+                and u.food_eated <> '0' \
+            order by \
+                u.food_eated desc \
+            limit 10 \
+        ".format(dbConfig.tblUsers, dbConfig.tblNicknames, tgChatId))
+
+        rows = cursor.fetchall()
+        
+        string = "<b>Рейтинг участников чата по количеству сытости.</b>\n\n"
+
+        count = 0
+
+        for row in rows:
+            count = count + 1
+
+            username = row["username"]
+
+            if row["name"] is not None and row["visible"]:
+                username = row["name"]
+
+            tmp = "{0}. <b><u>{1}</u></b> (<b>{2} ед.</b>)\n".format(count, username, row["food_eated"])
+            string = string + tmp
     else:
-        string = "Команда имеет следующие аргументы:\n\n<i>/top_messages</i> <b>(messages)</b> - отобразить топ по сообщениям.\n<i>/top_vodka</i> <b>(vodka)</b> - отобразить топ по количеству выпитой водки."
+        string = "Команда имеет следующие аргументы:\n\n<i>/top_messages</i> <b>(messages)</b> - отобразить топ по сообщениям.\n<i>/top_vodka</i> <b>(vodka)</b> - отобразить топ по количеству выпитой водки.\n<i>/top_eat</i> <b>(eat)</b> - отобразить топ по количеству сытости."
     
     db.close()
 
