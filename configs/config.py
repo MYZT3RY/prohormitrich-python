@@ -8,3 +8,5 @@ urlAnek = 'https://baneks.ru/random'
 minVodkaDrink = 0.5
 maxVodkaDrink = 3.0
 vodkaTimeout = 1800
+
+foodTimeout = 1800
